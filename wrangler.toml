@@ -1,0 +1,9 @@
+name = "nebula"
+pages_build_output_dir = "."
+compatibility_date = "2026-09-11"
+
+[build]
+# Static site — repo root is the publish dir, matching the previous Firebase Hosting setup.
+
+[observability]
+enabled = true

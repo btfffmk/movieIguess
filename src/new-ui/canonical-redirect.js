@@ -3,8 +3,8 @@
     return;
   }
 
-  const githubHost = 'xtian69420.github.io';
-  const firebaseHost = 'movie-i-guess.web.app';
+  const githubHost = 'btfffmk.github.io';
+  const canonicalHost = 'nebula.btfm.uk';
   const githubProjectPath = '/movieIguess';
   const currentPath = window.location.pathname || '/';
   const isGithubPages = window.location.hostname.toLowerCase() === githubHost;
@@ -13,7 +13,7 @@
     : currentPath;
   const isHomePage = appPath === '/' || appPath === '/index.html';
   const targetOrigin = isGithubPages
-    ? `https://${firebaseHost}`
+    ? `https://${canonicalHost}`
     : window.location.origin;
   const targetPath = isHomePage && !isGithubPages ? appPath : '/';
   const targetUrl = `${targetOrigin}${targetPath}${window.location.search}${window.location.hash}`;

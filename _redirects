@@ -1,0 +1,10 @@
+# Cloudflare Pages redirects — replaces Firebase Hosting's catch-all 404 with explicit deep-link routing.
+# Previously hosted on Firebase; deploy target moved to Cloudflare Pages (project: nebula).
+# Note: canonical-redirect.js still runs client-side and may normalize deep links to "/".
+
+/viewMovie       /legacy-index.html            301
+/WatchMovie      /legacy-index.html            301
+
+/legacy-index.html  /                            301
+/viewMovie.html     /                            301
+/WatchMovie.html    /                            301
