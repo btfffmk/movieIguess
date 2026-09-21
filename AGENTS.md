@@ -1,3 +1,5 @@
+> **Current Nebula implementation:** The canonical app now uses vanilla ES modules with Vite. Use `npm ci`, `npm run dev`, `npm test`, and `npm run build`; publish only `dist`. See [docs/nebula-migration.md](docs/nebula-migration.md) for the current architecture and deployment instructions. Older no-build and monolithic-file descriptions below are historical.
+
 # Repository Guidelines
 
 A static, no-build vanilla-JS frontend for discovering movies/series via TMDB. Deployed to **Cloudflare Pages** (project `nebula`, custom domain `nebula.btfm.uk`) with GitHub Pages as a mirror (`src/new-ui/canonical-redirect.js` redirects `btfffmk.github.io/movieIguess` → `https://nebula.btfm.uk/<path>`). The repo currently hosts TWO UI generations: a canonical ES-module SPA in `src/new-ui/` and a legacy multi-page Tailwind app kept as a backup. **Work on the new UI unless the user explicitly asks for the legacy pages.**

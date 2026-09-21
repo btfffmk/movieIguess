@@ -1,8 +1,15 @@
 {
-  "dependencies": {
-    "axios": "^1.8.4"
+  "name": "nebula",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5502",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "test": "node --test"
   },
   "devDependencies": {
-    "vite": "^6.2.3"
+    "vite": "^8.3.0"
   }
 }

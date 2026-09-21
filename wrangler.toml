@@ -1,9 +1,9 @@
 name = "nebula"
-pages_build_output_dir = "."
+pages_build_output_dir = "dist"
 compatibility_date = "2026-09-11"
 
 [build]
-# Static site — repo root is the publish dir, matching the previous Firebase Hosting setup.
+# Run npm run build first. Only the built Nebula app is published.
 
 [observability]
 enabled = true

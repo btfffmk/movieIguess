@@ -1,3 +1,5 @@
+> **Current Nebula implementation:** The canonical app now uses vanilla ES modules with Vite. Use `npm ci`, `npm run dev`, `npm test`, and `npm run build`; publish only `dist`. See [docs/nebula-migration.md](docs/nebula-migration.md) for the current architecture and deployment instructions. Older no-build and monolithic-file descriptions below are historical.
+
 # MovieIGuess
 
 > **Find the next thing worth watching.**

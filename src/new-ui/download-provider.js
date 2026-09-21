@@ -54,7 +54,7 @@ function getFileExtension(url) {
   }
 }
 
-async function scrapeProvider(providerId, media, onProgress) {
+async function scrapeProvider(providerId, media, onProgress, signal) {
   const params = new URLSearchParams({
     id: providerId,
     tmdbId: String(media.tmdbId),
@@ -72,6 +72,7 @@ async function scrapeProvider(providerId, media, onProgress) {
     `${DOWNLOAD_API}/scrape/source?${params.toString()}`,
     {
       method: 'GET',
+      signal,
       headers: {
         Accept: 'text/event-stream'
       },
@@ -95,6 +96,8 @@ async function scrapeProvider(providerId, media, onProgress) {
   const processBlock = block => {
     const parsed = parseSSEBlock(block);
     if (!parsed) return;
+
+    if (parsed.event === 'error') throw new Error(`${providerId} could not find sources`);
 
     if (parsed.event === 'start') {
       onProgress?.({
@@ -129,21 +132,28 @@ async function scrapeProvider(providerId, media, onProgress) {
     }
   };
 
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
 
-    buffer += decoder.decode(value, { stream: true });
-    const blocks = buffer.split(/\r?\n\r?\n/);
-    buffer = blocks.pop() || '';
+      buffer += decoder.decode(value, { stream: true });
+      const blocks = buffer.split(/\r?\n\r?\n/);
+      buffer = blocks.pop() || '';
 
-    for (const block of blocks) {
-      if (block.trim()) processBlock(block);
+      for (const block of blocks) {
+        if (block.trim()) processBlock(block);
+      }
+      if (completed) break;
     }
-  }
 
-  buffer += decoder.decode();
-  if (buffer.trim()) processBlock(buffer);
+    buffer += decoder.decode();
+    if (buffer.trim()) processBlock(buffer);
+
+  } finally {
+    await reader.cancel().catch(() => {});
+    reader.releaseLock();
+  }
 
   return completed || { embeds: [], stream: [] };
 }
@@ -201,16 +211,21 @@ function qualityScore(value) {
   return match ? Number(match[1]) : 0;
 }
 
-window.MovieIGuessDownloadProvider = {
+export const downloadProvider = {
   async getSources(media, options = {}) {
     const onProgress = options.onProgress;
+    let failures = 0;
+    const timeout = AbortSignal.timeout(60000);
+    const signal = options.signal ? AbortSignal.any([options.signal, timeout]) : timeout;
 
     const jobs = DOWNLOAD_PROVIDERS.map(async providerId => {
       try {
-        const data = await scrapeProvider(providerId, media, onProgress);
+        const data = await scrapeProvider(providerId, media, onProgress, signal);
         return normalizeStreams(data, providerId);
       } catch (error) {
-        console.error(`Download provider ${providerId} failed:`, error);
+        if (signal.aborted) throw error;
+        failures++;
+        console.warn(`Download provider ${providerId} failed:`, error);
         onProgress?.({
           provider: providerId,
           percentage: 100,
@@ -222,6 +237,7 @@ window.MovieIGuessDownloadProvider = {
 
     const settled = await Promise.all(jobs);
 
+    if (failures === DOWNLOAD_PROVIDERS.length) throw new Error('All download providers are unavailable');
     return dedupeSources(settled.flat()).sort((a, b) => {
       const qualityDifference = qualityScore(b.quality) - qualityScore(a.quality);
       if (qualityDifference) return qualityDifference;
@@ -229,3 +245,6 @@ window.MovieIGuessDownloadProvider = {
     });
   }
 };
+
+// Compatibility for external adapters following the original contract.
+if (typeof window !== 'undefined') window.MovieIGuessDownloadProvider = downloadProvider;
