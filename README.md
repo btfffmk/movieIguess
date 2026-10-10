@@ -78,6 +78,30 @@ MovieIGuess keeps profile data, the active profile, My List entries, selected se
 | Hosting | Firebase Hosting |
 | Persistence | Browser `localStorage` |
 
+## Local development
+
+The app runs directly as static HTML, CSS, and browser JavaScript modules. There
+is no build step and no npm runtime or development dependency. Requests use the
+browser's native `fetch` API. Axios and Vite are not required; the legacy pages
+also use `fetch` and do not load Axios.
+
+Open the repository in VS Code and use **Live Server** to serve `index.html`.
+The checked-in VS Code settings use port **5502**. Alternatively, with Python 3
+installed, run this command from the repository root:
+
+```sh
+python -m http.server 5502 --bind 127.0.0.1
+```
+
+Then open `http://127.0.0.1:5502/`. Use HTTP rather than opening `index.html`
+as a local file so browser modules load correctly. TMDB, fonts, playback, and
+download providers still require network access.
+
+`package.json` is private and the regenerated lockfile records an empty npm
+dependency tree. `npm ci --ignore-scripts` can verify the lockfile if Node.js
+and npm are installed, but npm is not needed to serve the app. Existing Firebase
+Hosting configuration serves the repository directly.
+
 ## 🗂️ Project map
 
 ```text
