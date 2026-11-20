@@ -1,0 +1,34 @@
+name = "movieguess"
+compatibility_date = "2026-09-11"
+main = "worker/index.js"
+workers_dev = true
+preview_urls = true
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = true
+not_found_handling = "single-page-application"
+
+[[routes]]
+pattern = "movies.btfm.uk"
+custom_domain = true
+
+[[routes]]
+pattern = "nebula.btfm.uk/*"
+zone_name = "btfm.uk"
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 0.1
+invocation_logs = false
+
+[observability.traces]
+enabled = false
+
+[[analytics_engine_datasets]]
+binding = "NEBULA_ANALYTICS"
+dataset = "nebula_page_views"

@@ -1,0 +1,8 @@
+{
+  "appId": "uk.btfm.nebula",
+  "appName": "Nebula",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

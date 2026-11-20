@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nebula — Architecture Diagram</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { min-height: 100vh; padding: 2rem; color: #fff; background: #020617; font-family: "JetBrains Mono", monospace; }
+    .container { max-width: 1200px; margin: auto; }
+    header { margin-bottom: 2rem; }
+    .heading { display: flex; align-items: center; gap: 1rem; margin-bottom: .5rem; }
+    .pulse { width: 12px; height: 12px; border-radius: 50%; background: #22d3ee; animation: pulse 2s infinite; }
+    @keyframes pulse { 50% { opacity: .5; } }
+    h1 { font-size: 1.5rem; }
+    .subtitle { margin-left: 1.75rem; color: #94a3b8; font-size: .875rem; }
+    .diagram, .card { border: 1px solid #1e293b; background: rgba(15, 23, 42, .5); }
+    .diagram { overflow-x: auto; padding: 1.5rem; border-radius: 1rem; }
+    svg { display: block; width: 100%; min-width: 940px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .card { padding: 1.25rem; border-radius: .75rem; }
+    .card-title { display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .cyan { background: #22d3ee; } .emerald { background: #34d399; } .amber { background: #fbbf24; }
+    h3 { font-size: .875rem; }
+    ul { list-style: none; color: #94a3b8; font-size: .75rem; }
+    li { margin-bottom: .375rem; }
+    footer { margin-top: 1.5rem; color: #475569; font-size: .75rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="heading"><div class="pulse"></div><h1>Nebula Architecture</h1></div>
+      <p class="subtitle">Vite-built movie discovery SPA served by a Cloudflare Worker</p>
+    </header>
+    <main class="diagram">
+      <svg viewBox="0 0 1040 620" role="img" aria-labelledby="title description">
+        <title id="title">Nebula application and deployment architecture</title>
+        <desc id="description">Vite builds the source into dist for the movieguess Worker. The browser calls TMDB and media providers, stores profile data locally, and sends anonymous route counts to Analytics Engine.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748b"/></marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#1e293b" stroke-width=".5"/></pattern>
+        </defs>
+        <rect width="1040" height="620" fill="url(#grid)"/>
+
+        <!-- Connections are drawn first so they remain behind component boxes. -->
+        <g fill="none" stroke-width="1.5" marker-end="url(#arrow)">
+          <path d="M145 220H215" stroke="#94a3b8"/><path d="M335 220H405" stroke="#fbbf24"/>
+          <path d="M525 220H595" stroke="#22d3ee"/><path d="M735 195H805" stroke="#94a3b8"/>
+          <path d="M735 260H805" stroke="#94a3b8"/><path d="M665 300V385" stroke="#a78bfa"/>
+          <path d="M595 245H545V450H485" stroke="#34d399"/><path d="M595 270H525V530H485" stroke="#a78bfa"/>
+          <path d="M275 180V125H405" stroke="#64748b" stroke-dasharray="5 4"/>
+        </g>
+        <g fill="#94a3b8" font-size="8" text-anchor="middle">
+          <text x="180" y="213">git push</text><text x="370" y="213">dist</text><text x="560" y="213">HTTPS</text>
+          <text x="770" y="188">metadata</text><text x="770" y="253">iframes / sources</text>
+          <text x="685" y="350">JSON</text><text x="525" y="442">route views</text><text x="505" y="522">page visits</text>
+          <text x="340" y="118">npm ci · test · build</text>
+        </g>
+
+        <rect x="45" y="180" width="100" height="80" rx="6" fill="#0f172a"/><rect x="45" y="180" width="100" height="80" rx="6" fill="rgba(30,41,59,.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="95" y="205" fill="white" font-size="11" font-weight="600" text-anchor="middle">GitHub</text><text x="95" y="223" fill="#94a3b8" font-size="8" text-anchor="middle">private repo</text><text x="95" y="240" fill="#94a3b8" font-size="8" text-anchor="middle">main</text>
+
+        <rect x="215" y="180" width="120" height="80" rx="6" fill="#0f172a"/><rect x="215" y="180" width="120" height="80" rx="6" fill="rgba(30,41,59,.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="275" y="204" fill="white" font-size="11" font-weight="600" text-anchor="middle">Vite 8</text><text x="275" y="223" fill="#94a3b8" font-size="8" text-anchor="middle">ES modules + CSS</text><text x="275" y="242" fill="#fbbf24" font-size="8" text-anchor="middle">npm run build</text>
+
+        <rect x="405" y="180" width="120" height="80" rx="6" fill="#0f172a"/><rect x="405" y="180" width="120" height="80" rx="6" fill="rgba(120,53,15,.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="465" y="204" fill="white" font-size="11" font-weight="600" text-anchor="middle">dist/</text><text x="465" y="223" fill="#94a3b8" font-size="8" text-anchor="middle">hashed assets</text><text x="465" y="242" fill="#94a3b8" font-size="8" text-anchor="middle">only deploy input</text>
+
+        <rect x="380" y="55" width="170" height="105" rx="12" fill="rgba(251,191,36,.05)" stroke="#fbbf24" stroke-dasharray="8 4"/>
+        <text x="392" y="73" fill="#fbbf24" font-size="9" font-weight="600">Development</text>
+        <text x="465" y="99" fill="white" font-size="11" font-weight="600" text-anchor="middle">Node test runner</text><text x="465" y="119" fill="#94a3b8" font-size="8" text-anchor="middle">core + download contracts</text><text x="465" y="139" fill="#94a3b8" font-size="8" text-anchor="middle">npm test</text>
+
+        <rect x="570" y="55" width="190" height="270" rx="12" fill="rgba(251,191,36,.05)" stroke="#fbbf24" stroke-dasharray="8 4"/>
+        <text x="582" y="73" fill="#fbbf24" font-size="9" font-weight="600">Cloudflare edge</text>
+        <rect x="595" y="90" width="140" height="80" rx="6" fill="#0f172a"/><rect x="595" y="90" width="140" height="80" rx="6" fill="rgba(6,78,59,.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="665" y="114" fill="white" font-size="11" font-weight="600" text-anchor="middle">movieguess Worker</text><text x="665" y="133" fill="#94a3b8" font-size="8" text-anchor="middle">assets + analytics</text><text x="665" y="151" fill="#34d399" font-size="7" text-anchor="middle">worker/index.js</text>
+        <rect x="595" y="190" width="140" height="110" rx="6" fill="#0f172a"/><rect x="595" y="190" width="140" height="110" rx="6" fill="rgba(8,51,68,.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="665" y="214" fill="white" font-size="11" font-weight="600" text-anchor="middle">Browser SPA</text><text x="665" y="233" fill="#94a3b8" font-size="8" text-anchor="middle">app + router</text><text x="665" y="250" fill="#94a3b8" font-size="8" text-anchor="middle">discovery · profiles</text><text x="665" y="267" fill="#94a3b8" font-size="8" text-anchor="middle">title · player</text><text x="665" y="285" fill="#22d3ee" font-size="7" text-anchor="middle">nebula.btfm.uk</text>
+
+        <rect x="805" y="150" width="145" height="80" rx="6" fill="#0f172a"/><rect x="805" y="150" width="145" height="80" rx="6" fill="rgba(30,41,59,.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="877" y="175" fill="white" font-size="11" font-weight="600" text-anchor="middle">TMDB v3</text><text x="877" y="194" fill="#94a3b8" font-size="8" text-anchor="middle">catalogue + images</text><text x="877" y="212" fill="#94a3b8" font-size="8" text-anchor="middle">browser fetch</text>
+        <rect x="805" y="250" width="145" height="80" rx="6" fill="#0f172a"/><rect x="805" y="250" width="145" height="80" rx="6" fill="rgba(30,41,59,.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="877" y="275" fill="white" font-size="11" font-weight="600" text-anchor="middle">Media providers</text><text x="877" y="294" fill="#94a3b8" font-size="8" text-anchor="middle">players + downloads</text><text x="877" y="312" fill="#94a3b8" font-size="8" text-anchor="middle">external services</text>
+
+        <rect x="595" y="385" width="140" height="90" rx="6" fill="#0f172a"/><rect x="595" y="385" width="140" height="90" rx="6" fill="rgba(76,29,149,.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="665" y="410" fill="white" font-size="11" font-weight="600" text-anchor="middle">localStorage</text><text x="665" y="430" fill="#94a3b8" font-size="8" text-anchor="middle">profiles · my list</text><text x="665" y="447" fill="#94a3b8" font-size="8" text-anchor="middle">progress · server</text><text x="665" y="463" fill="#a78bfa" font-size="7" text-anchor="middle">per origin/browser</text>
+        <rect x="325" y="410" width="160" height="80" rx="6" fill="#0f172a"/><rect x="325" y="410" width="160" height="80" rx="6" fill="rgba(6,78,59,.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="405" y="435" fill="white" font-size="11" font-weight="600" text-anchor="middle">Analytics Engine</text><text x="405" y="454" fill="#94a3b8" font-size="8" text-anchor="middle">anonymous hash routes</text><text x="405" y="473" fill="#34d399" font-size="7" text-anchor="middle">nebula_page_views</text>
+        <rect x="325" y="510" width="160" height="70" rx="6" fill="#0f172a"/><rect x="325" y="510" width="160" height="70" rx="6" fill="rgba(76,29,149,.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="405" y="535" fill="white" font-size="11" font-weight="600" text-anchor="middle">Worker logs</text><text x="405" y="554" fill="#94a3b8" font-size="8" text-anchor="middle">10% page-visit sample</text><text x="405" y="570" fill="#a78bfa" font-size="7" text-anchor="middle">country + status only</text>
+
+        <text x="45" y="420" fill="white" font-size="10" font-weight="600">Legend</text>
+        <rect x="45" y="435" width="16" height="10" rx="2" fill="rgba(8,51,68,.4)" stroke="#22d3ee"/><text x="69" y="444" fill="#94a3b8" font-size="8">Frontend</text>
+        <rect x="45" y="456" width="16" height="10" rx="2" fill="rgba(6,78,59,.4)" stroke="#34d399"/><text x="69" y="465" fill="#94a3b8" font-size="8">Edge/service</text>
+        <rect x="45" y="477" width="16" height="10" rx="2" fill="rgba(120,53,15,.3)" stroke="#fbbf24"/><text x="69" y="486" fill="#94a3b8" font-size="8">Build/cloud</text>
+        <rect x="45" y="498" width="16" height="10" rx="2" fill="rgba(76,29,149,.4)" stroke="#a78bfa"/><text x="69" y="507" fill="#94a3b8" font-size="8">State/telemetry</text>
+        <rect x="45" y="519" width="16" height="10" rx="2" fill="rgba(30,41,59,.5)" stroke="#94a3b8"/><text x="69" y="528" fill="#94a3b8" font-size="8">External/source</text>
+      </svg>
+    </main>
+    <section class="cards">
+      <article class="card"><div class="card-title"><div class="dot cyan"></div><h3>Application</h3></div><ul><li>• Vanilla ES modules with hash routing</li><li>• TMDB metadata is fetched in the browser</li><li>• Profiles and libraries stay in localStorage</li><li>• Legacy pages stay outside the production build</li></ul></article>
+      <article class="card"><div class="card-title"><div class="dot amber"></div><h3>Build &amp; delivery</h3></div><ul><li>• npm test checks core and download contracts</li><li>• Vite emits the production-only dist directory</li><li>• Wrangler deploys dist to the movieguess Worker</li><li>• Worker serves nebula.btfm.uk and movies.btfm.uk</li></ul></article>
+      <article class="card"><div class="card-title"><div class="dot emerald"></div><h3>Observability</h3></div><ul><li>• Route events contain no profile or title data</li><li>• Analytics counts route, country and hostname</li><li>• HTML logs sample country and status</li><li>• Queries, cookies and IPs are omitted</li></ul></article>
+    </section>
+    <footer>Nebula · Vite SPA · Cloudflare Worker · TMDB · updated 24 September 2026</footer>
+  </div>
+</body>
+</html>
