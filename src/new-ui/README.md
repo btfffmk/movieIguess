@@ -1,14 +1,5 @@
-# New UI
+# Nebula
 
-This folder contains the new streaming-style UI while keeping the original project files intact.
+The canonical vanilla-JavaScript SPA now uses Vite. See [the migration guide](../../docs/nebula-migration.md) for modules, storage compatibility, local development, testing, and Cloudflare deployment.
 
-- `netflix-ui.js` – profile gate, home screen, movie rails, search and details modal.
-- `netflix-ui.css` – all new UI styling.
-- `profile-store.js` – browser `localStorage` profile CRUD.
-
-The original `index.html` was backed up as `legacy-index.html`.
-The new `index.html` loads this UI directly.
-
-Profiles are stored under:
-- `movieiguess.profiles.v1`
-- `movieiguess.activeProfile.v1`
+Start with `npm ci` and `npm run dev`. Build with `npm run build`; publish only `dist`. Run focused checks with `npm test`.

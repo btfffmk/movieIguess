@@ -1,3 +1,5 @@
+> **Current Nebula implementation:** The canonical app now uses vanilla ES modules with Vite. Use `npm ci`, `npm run dev`, `npm test`, and `npm run build`; deploy only the built `dist` assets through the `movieguess` Cloudflare Worker. See [docs/nebula-migration.md](docs/nebula-migration.md) for the current architecture and deployment instructions. Older no-build and monolithic-file descriptions below are historical.
+
 # MovieIGuess
 
 > **Find the next thing worth watching.**
@@ -5,7 +7,7 @@
 > A fast, Netflix-style movie and series discovery interface powered by TMDB.
 
 <p align="center">
-	<a href="https://xtian69420.github.io/movieIguess/">Open MovieIGuess</a>
+	<a href="https://btfffmk.github.io/movieIguess/">Open MovieIGuess</a>
 	&nbsp;&middot;&nbsp;
 	<a href="#-what-you-can-do">Explore features</a>
 	&nbsp;&middot;&nbsp;
@@ -78,29 +80,9 @@ MovieIGuess keeps profile data, the active profile, My List entries, selected se
 | Hosting | Firebase Hosting |
 | Persistence | Browser `localStorage` |
 
-## Local development
+### Android
 
-The app runs directly as static HTML, CSS, and browser JavaScript modules. There
-is no build step and no npm runtime or development dependency. Requests use the
-browser's native `fetch` API. Axios and Vite are not required; the legacy pages
-also use `fetch` and do not load Axios.
-
-Open the repository in VS Code and use **Live Server** to serve `index.html`.
-The checked-in VS Code settings use port **5502**. Alternatively, with Python 3
-installed, run this command from the repository root:
-
-```sh
-python -m http.server 5502 --bind 127.0.0.1
-```
-
-Then open `http://127.0.0.1:5502/`. Use HTTP rather than opening `index.html`
-as a local file so browser modules load correctly. TMDB, fonts, playback, and
-download providers still require network access.
-
-`package.json` is private and the regenerated lockfile records an empty npm
-dependency tree. `npm ci --ignore-scripts` can verify the lockfile if Node.js
-and npm are installed, but npm is not needed to serve the app. Existing Firebase
-Hosting configuration serves the repository directly.
+Nebula also includes a Capacitor Android project under `android/`. With Android Studio, Android SDK 36, and JDK 21 or newer installed, use `npm run android:sync` to rebuild and copy the web app, then `npm run android:open` to launch the native project. See [the migration guide](docs/nebula-migration.md#android-app) for build, signing, storage, and device-testing notes.
 
 ## 🗂️ Project map
 
@@ -135,5 +117,5 @@ firebase.json              Hosting configuration
 - Use the project only with content and services you are authorized to access.
 
 <p align="center">
-	<strong><a href="https://xtian69420.github.io/movieIguess/">Start browsing</a></strong>
+	<strong><a href="https://btfffmk.github.io/movieIguess/">Start browsing</a></strong>
 </p>
